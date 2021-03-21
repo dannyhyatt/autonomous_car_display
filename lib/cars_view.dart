@@ -32,8 +32,8 @@ class _CarsViewState extends State<CarsView> {
   Widget build(BuildContext context) {
     return SizedBox(
       // todo make sure to get the height and width dynamically from the server
-      height: 1000,
-      width: 1000,
+      height: API.carMap.height,
+      width: API.carMap.width,
       child: Stack(
         children: [
           ...API.currentCars.map((car) => AnimatedPositioned(

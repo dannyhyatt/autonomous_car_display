@@ -1,6 +1,7 @@
 import 'package:autonomous_car_display/api.dart';
 import 'package:autonomous_car_display/main.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -16,7 +17,19 @@ class _IntroScreenState extends State<IntroScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Config')),
+      appBar: AppBar(
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('route', style: GoogleFonts.comfortaa(color: Colors.white)),
+            Text('X', style: GoogleFonts.comfortaa(color: Colors.tealAccent))
+          ]
+        ),
+        backgroundColor: Colors.black54,
+        centerTitle: true,
+        shadowColor: Colors.transparent,
+      ),
+      backgroundColor: Colors.grey[900],
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.max,
@@ -25,17 +38,18 @@ class _IntroScreenState extends State<IntroScreen> {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text('domain and port: '),
-                IntrinsicWidth(child: TextField(controller: textEditingController,))
+                Text('Domain/Port:    ', style: GoogleFonts.comfortaa(color: Colors.white), textScaleFactor: 1.25),
+                IntrinsicWidth(child: TextField(controller: textEditingController,style: GoogleFonts.comfortaa(color: Colors.white), decoration: InputDecoration(hintText: 'localhost:8000', hintStyle: TextStyle(color: Colors.grey))))
               ],
             ),
             FloatingActionButton(
+              backgroundColor: Colors.tealAccent,
               child: Icon(Icons.keyboard_arrow_right_outlined),
               onPressed: () async {
-                String uuid = jsonDecode((await http.post(Uri.http('${textEditingController.text}', '/register'), headers: {'Content-Type' : 'application/json'}, body: '{}')).body)['uuid'];
+                String uuid = jsonDecode((await http.post(Uri.http('${textEditingController.text == "" ? 'localhost:8000' : textEditingController.text}', '/register'), headers: {'Content-Type' : 'application/json'}, body: '{}')).body)['uuid'];
                 debugPrint('uuid: ${uuid}');
                 await API.connect(domain: textEditingController.text, uuid: uuid);
-                Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => MyHomePage(title: 'Simulation Display')));
+                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx) => MyHomePage(title: 'Simulation Display')));
               },
             )
           ],
