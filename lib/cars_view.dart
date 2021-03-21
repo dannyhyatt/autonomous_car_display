@@ -24,6 +24,8 @@ class _CarsViewState extends State<CarsView> {
 
   void refreshCars() {
     print('refreshing cars???');
+    API.currentCars.forEach((element) {print('car at ${element}');});
+    setState(() {});
   }
 
   @override
@@ -41,7 +43,7 @@ class _CarsViewState extends State<CarsView> {
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
               child: RotatedBox(
                   quarterTurns: 1,
-                  child: Image.network('https://www.freeiconspng.com/thumbs/car-top-view-icon/car-top-view-icon-15.png', height: 6, width: 10,)
+                  child: Icon(Icons.directions_car_rounded, color: Colors.white, size: 4,)
               ),
             ), duration: const Duration(milliseconds: 250))
           )

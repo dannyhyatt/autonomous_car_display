@@ -60,8 +60,8 @@ class API {
         for(int i = 0; i < carMapData['data'].length; i++) {
           currentCars.add(Car(
             id: carMapData['data'][i]['id'],
-            x: carMapData['data'][i]['x'],
-            y: carMapData['data'][i]['y'],
+            x: carMapData['data'][i]['cords'][0],
+            y: carMapData['data'][i]['cords'][1],
             direction: carMapData['data'][i]['direction'],
           ));
           // print('current cars: $currentCars');
