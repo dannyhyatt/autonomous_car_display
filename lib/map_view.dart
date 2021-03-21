@@ -16,44 +16,50 @@ class _MapViewState extends State<MapView> {
 
   @override
   Widget build(BuildContext context) {
-    return InteractiveViewer(
-      maxScale: 250,
-      minScale: 0.15,
-      child: Container(
-        color: Colors.white,
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.white),
+        borderRadius: BorderRadius.circular(16)
+      ),
+      child: InteractiveViewer(
+        maxScale: 50,
+        minScale: 3,
         child: AspectRatio(
           aspectRatio: 1,
-          child: SizedBox(
-            width: API.carMap.width.toDouble(),
-            height: API.carMap.height.toDouble(),
-            child: Stack(
-              children: [
-                Container(
-                  color: Colors.grey[300],
-                ),
-                CustomPaint(
-                  painter: EdgesPainter(API.carMap.edges)
-                ),
-                ...API.carMap.verticies.map((e) => Positioned(
-                  left: e.x - 2.5,
-                  top: e.y - 2.5,
-                  child: Container(
-                    height: 5,
-                    width: 5,
-                    color: Colors.grey[900],
-                    child: Center(child: Text('${e.id}', style: TextStyle(color: Colors.white, fontSize: 4))),
+          child: Center(
+            child: SizedBox(
+              width: 150,
+              height: 150,
+              child: Stack(
+                children: [
+                  CustomPaint(
+                    painter: EdgesPainter(API.carMap.edges)
                   ),
-                )),
-                CarsView(controller: API.carViewController),
-              ]
+                  ...API.carMap.verticies.map((e) => Positioned(
+                    left: e.x - 1.75,
+                    top: e.y - 1.75,
+                    child: Container(
+                      height: 3.5,
+                      width: 3.5,
+                      color: Colors.black,
+                      foregroundDecoration: BoxDecoration(
+                          border: Border.all(color: Colors.yellow, width: 0.25),
+                          borderRadius: BorderRadius.circular(0.35)
+                      ),
+                      child: Center(child: Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 01, 0, 0),
+                        // padding: EdgeInsets.zero,
+                        child: Text('${e.id}', style: TextStyle(color: Colors.white, fontSize: 1.5)),
+                      )),
+                    ),
+                  )),
+                  CarsView(controller: API.carViewController),
+                ]
+              ),
             ),
           ),
         ),
       ),
     );
   }
-}
-
-class MapViewController {
-
 }

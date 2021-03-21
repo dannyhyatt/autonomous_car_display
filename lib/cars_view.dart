@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'dart:math' as math;
+
 import 'package:autonomous_car_display/api.dart';
 import 'package:flutter/material.dart';
 
@@ -24,28 +26,27 @@ class _CarsViewState extends State<CarsView> {
 
   void refreshCars() {
     print('refreshing cars???');
-    API.currentCars.forEach((element) {print('car at ${element}');});
+    API.currentCars.forEach((element) {print('car at $element');});
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      // todo make sure to get the height and width dynamically from the server
-      height: API.carMap.height,
-      width: API.carMap.width,
+      height: 100,
+      width: 100,
       child: Stack(
         children: [
-          ...API.currentCars.map((car) => AnimatedPositioned(
+          ...API.currentCars.map((car) => Positioned(
             top: car.y,
             left: car.x,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
               child: RotatedBox(
-                  quarterTurns: 1,
-                  child: Icon(Icons.directions_car_rounded, color: Colors.white, size: 4,)
+                  quarterTurns: (car.direction % 90).round(),
+                  child: Icon(Icons.directions_car_rounded, color: Colors.white, size: 4)
               ),
-            ), duration: const Duration(milliseconds: 250))
+            ))
           )
         ],
       ),

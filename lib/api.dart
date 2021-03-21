@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:autonomous_car_display/cars_view.dart';
 import 'package:autonomous_car_display/car.dart';
 import 'package:autonomous_car_display/map.dart';
+import 'package:autonomous_car_display/cars_listview.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 
@@ -14,6 +15,7 @@ class API {
 
   static GlobalKey<ScaffoldState> mainViewScaffoldKey = GlobalKey<ScaffoldState>();
   static CarsViewController carViewController = CarsViewController();
+  static CarsListViewController carsListViewController = CarsListViewController();
 
 
   static Future<bool> connect({String domain, String uuid}) async {
@@ -58,6 +60,7 @@ class API {
 
       if(carMapData['intent'] == 'getAllCars') {
         for(int i = 0; i < carMapData['data'].length; i++) {
+          currentCars = [];
           currentCars.add(Car(
             id: carMapData['data'][i]['id'],
             x: carMapData['data'][i]['cords'][0],
@@ -67,6 +70,7 @@ class API {
           // print('current cars: $currentCars');
         }
         carViewController.updateCarPositions();
+        carsListViewController.updateCars();
       }
     });
     channel.sink.add('getGraph|<timed>|{}');

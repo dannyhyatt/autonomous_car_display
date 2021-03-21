@@ -43,6 +43,7 @@ class _IntroScreenState extends State<IntroScreen> {
               ],
             ),
             FloatingActionButton(
+              heroTag: 'fab_add',
               backgroundColor: Colors.tealAccent,
               child: Icon(Icons.keyboard_arrow_right_outlined),
               onPressed: () async {
