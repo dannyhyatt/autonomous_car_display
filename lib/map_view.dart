@@ -5,14 +5,28 @@ import 'package:autonomous_car_display/map.dart';
 import 'package:flutter/material.dart';
 
 class MapView extends StatefulWidget {
-  
-  const MapView({Key key}) : super(key: key);
+
+  final MapController controller;
+
+  const MapView({Key key, this.controller}) : super(key: key);
 
   @override
   _MapViewState createState() => _MapViewState();
 }
 
 class _MapViewState extends State<MapView> {
+
+  @override
+  void initState() {
+    widget.controller.updateMap = updateMap;
+    super.initState();
+  }
+
+  void updateMap() {
+    print('updating map route');
+    setState((){});
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +37,7 @@ class _MapViewState extends State<MapView> {
       ),
       child: InteractiveViewer(
         maxScale: 50,
-        minScale: 3,
+        minScale: 4,
         child: AspectRatio(
           aspectRatio: 1,
           child: Center(
@@ -41,13 +55,13 @@ class _MapViewState extends State<MapView> {
                     child: Container(
                       height: 3.5,
                       width: 3.5,
-                      color: Colors.black,
+                      color: !API.currentVerticies.contains(e.id) ? Colors.black : Colors.red,
                       foregroundDecoration: BoxDecoration(
                           border: Border.all(color: Colors.yellow, width: 0.25),
                           borderRadius: BorderRadius.circular(0.35)
                       ),
                       child: Center(child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 01, 0, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 1, 0, 0),
                         // padding: EdgeInsets.zero,
                         child: Text('${e.id}', style: TextStyle(color: Colors.white, fontSize: 1.5)),
                       )),
@@ -61,5 +75,14 @@ class _MapViewState extends State<MapView> {
         ),
       ),
     );
+  }
+}
+
+
+
+class MapController {
+  VoidCallback updateMap;
+  void dispose() {
+    updateMap = null;
   }
 }

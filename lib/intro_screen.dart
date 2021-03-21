@@ -33,18 +33,33 @@ class _IntroScreenState extends State<IntroScreen> {
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
+            Spacer(),
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('Domain/Port:    ', style: GoogleFonts.comfortaa(color: Colors.white), textScaleFactor: 1.25),
-                IntrinsicWidth(child: TextField(controller: textEditingController,style: GoogleFonts.comfortaa(color: Colors.white), decoration: InputDecoration(hintText: 'localhost:8000', hintStyle: TextStyle(color: Colors.grey))))
+                IntrinsicWidth(child: TextField(
+                    decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                      border: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                      hintText: 'localhost:8000', hintStyle: TextStyle(color: Colors.grey)
+                    ),
+                    controller: textEditingController,style: GoogleFonts.comfortaa(color: Colors.white)))
               ],
             ),
+            Divider(color: Colors.transparent),
             FloatingActionButton(
               heroTag: 'fab_add',
-              backgroundColor: Colors.tealAccent,
+              backgroundColor: Colors.teal,
               child: Icon(Icons.keyboard_arrow_right_outlined),
               onPressed: () async {
                 String uuid = jsonDecode((await http.post(Uri.http('${textEditingController.text == "" ? 'localhost:8000' : textEditingController.text}', '/register'), headers: {'Content-Type' : 'application/json'}, body: '{}')).body)['uuid'];
@@ -52,7 +67,8 @@ class _IntroScreenState extends State<IntroScreen> {
                 await API.connect(domain: textEditingController.text, uuid: uuid);
                 Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx) => MyHomePage(title: 'Simulation Display')));
               },
-            )
+            ),
+            Spacer()
           ],
         ),
       ),

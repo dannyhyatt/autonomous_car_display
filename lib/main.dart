@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Simulation Display',
       theme: ThemeData(
         primarySwatch: Colors.teal,
@@ -86,26 +87,53 @@ class _MyHomePageState extends State<MyHomePage> {
                               TextEditingController endController = TextEditingController();
                               return IntrinsicHeight(
                                 child: Dialog(
+                                  backgroundColor: Colors.grey[800],
                                   insetPadding: const EdgeInsets.all(64),
-                                  shape: RoundedRectangleBorder(),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12)
+                                  ),
                                   child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding: const EdgeInsets.all(16),
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Text('Add Car'),
+                                        Text('Add Car', style: GoogleFonts.comfortaa(color: Colors.white), textScaleFactor: 1.25,),
                                         Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            Text('starting vertice: '),
-                                            SizedBox(width: 50, child: TextField(controller: startController, keyboardType: TextInputType.number))
+                                            Text('Starting vertex: ', style: GoogleFonts.comfortaa(color: Colors.white)),
+                                            SizedBox(width: 50, child: TextField(textAlign: TextAlign.center, controller: startController, keyboardType: TextInputType.number, style: GoogleFonts.comfortaa(color: Colors.white),
+                                                decoration: InputDecoration(
+                                                  enabledBorder: UnderlineInputBorder(
+                                                    borderSide: BorderSide(color: Colors.grey),
+                                                  ),
+                                                  focusedBorder: UnderlineInputBorder(
+                                                    borderSide: BorderSide(color: Colors.white),
+                                                  ),
+                                                  border: UnderlineInputBorder(
+                                                    borderSide: BorderSide(color: Colors.grey),
+                                                  ),
+                                                )
+                                            ))
                                           ],
                                         ),
                                         Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            Text('ending vertice: '),
-                                            SizedBox(width: 50, child: TextField(controller: endController, keyboardType: TextInputType.number))
+                                            Text('Destination Vertex: ', style: GoogleFonts.comfortaa(color: Colors.white)),
+                                            SizedBox(width: 50, child: TextField(textAlign: TextAlign.center, controller: endController, keyboardType: TextInputType.number, style: GoogleFonts.comfortaa(color: Colors.white),
+                                                decoration: InputDecoration(
+                                                  enabledBorder: UnderlineInputBorder(
+                                                    borderSide: BorderSide(color: Colors.grey),
+                                                  ),
+                                                  focusedBorder: UnderlineInputBorder(
+                                                    borderSide: BorderSide(color: Colors.white),
+                                                  ),
+                                                  border: UnderlineInputBorder(
+                                                    borderSide: BorderSide(color: Colors.grey),
+                                                  ),
+                                                )
+                                            ))
                                           ],
                                         ),
                                         Padding(
@@ -136,7 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Container(
               padding: EdgeInsets.all(16),
-              child: MapView(),
+              child: MapView(controller: API.mapController),
             )
           ],
         ),

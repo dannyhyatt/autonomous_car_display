@@ -4,6 +4,7 @@ import 'package:autonomous_car_display/cars_view.dart';
 import 'package:autonomous_car_display/car.dart';
 import 'package:autonomous_car_display/map.dart';
 import 'package:autonomous_car_display/cars_listview.dart';
+import 'package:autonomous_car_display/map_view.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 
@@ -12,10 +13,12 @@ class API {
   static IOWebSocketChannel channel;
   static CarMap carMap;
   static List<Car> currentCars = [];
+  static List<int> currentVerticies = [];
 
   static GlobalKey<ScaffoldState> mainViewScaffoldKey = GlobalKey<ScaffoldState>();
   static CarsViewController carViewController = CarsViewController();
   static CarsListViewController carsListViewController = CarsListViewController();
+  static MapController mapController = MapController();
 
 
   static Future<bool> connect({String domain, String uuid}) async {
@@ -52,9 +55,9 @@ class API {
 
       if(carMapData['intent'] == 'addCar') {
         if(carMapData['result'] == 'success') {
-          mainViewScaffoldKey.currentState.showSnackBar(SnackBar(content: Text('successfully added car')));
+          mainViewScaffoldKey.currentState.showSnackBar(SnackBar(content: Text('Successfully added car')));
         } else {
-          mainViewScaffoldKey.currentState.showSnackBar(SnackBar(content: Text('error adding car')));
+          mainViewScaffoldKey.currentState.showSnackBar(SnackBar(content: Text('Error adding car')));
         }
       }
 
@@ -71,6 +74,13 @@ class API {
         }
         carViewController.updateCarPositions();
         carsListViewController.updateCars();
+      }
+
+      if(carMapData['intent'] == 'getCarRoute') {
+        debugPrint('CARMAPDATA: ${carMapData}');
+        if(carMapData['data'] == null) return 1;
+        currentVerticies = carMapData['data'];
+        mapController.updateMap();
       }
     });
     channel.sink.add('getGraph|<timed>|{}');

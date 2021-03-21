@@ -17,11 +17,19 @@ class CarsView extends StatefulWidget {
 
 class _CarsViewState extends State<CarsView> {
 
+  Timer loop;
+
   @override
   void initState() {
     widget.controller.updateCarPositions = refreshCars;
-    Timer.periodic(Duration(milliseconds: 500), (timer) { API.channel.sink.add('getAllCars|<time>|{}'); });
+    loop = Timer.periodic(Duration(milliseconds: 500), (timer) { API.channel.sink.add('getAllCars|<time>|{}'); });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    loop.cancel();
+    super.dispose();
   }
 
   void refreshCars() {
@@ -38,13 +46,13 @@ class _CarsViewState extends State<CarsView> {
       child: Stack(
         children: [
           ...API.currentCars.map((car) => Positioned(
-            top: car.y,
-            left: car.x,
+            top: car.y - 1,
+            left: car.x - 1,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
               child: RotatedBox(
                   quarterTurns: (car.direction % 90).round(),
-                  child: Icon(Icons.directions_car_rounded, color: Colors.white, size: 4)
+                  child: Icon(Icons.directions_car_rounded, color: Colors.white, size: 2)
               ),
             ))
           )

@@ -35,7 +35,11 @@ class _CarsListViewState extends State<CarsListView> {
         itemCount: API.currentCars.length,
         itemBuilder: (ctx, index) {
           return InkWell(
-            onTap: (){},
+            onTap: (){
+              String toSend = 'getCarRoute|<time>|{“id”: ${API.currentCars[index].id} }';
+              print('SENDING: $toSend}');
+              API.channel.sink.add(toSend);
+            },
             borderRadius: BorderRadius.circular(12),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
